@@ -3,10 +3,16 @@ package Model;
 import java.util.Objects;
 
 public class Subtask extends Task {
-    protected Integer epicId;
+    protected int epicId;
 
-    public Subtask(String name, String description, Status status) {
+    public Subtask(Integer id, String name, String description, Status status, int epicId) {
+        super(id, name, description, status);
+        this.epicId = epicId;
+    }
+
+    public Subtask(String name, String description, Status status, int epicId) {
         super(name, description, status);
+        this.epicId = epicId;
     }
 
     public Integer getEpicId() {
@@ -23,7 +29,7 @@ public class Subtask extends Task {
         if (o == null || getClass() != o.getClass()) return false;
         if (!super.equals(o)) return false;
         Subtask subtask = (Subtask) o;
-        return epicId.equals(subtask.epicId);
+        return Objects.equals(epicId, subtask.epicId);
     }
 
     @Override

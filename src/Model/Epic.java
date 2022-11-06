@@ -5,18 +5,9 @@ import java.util.Objects;
 
 public class Epic extends Task {
     protected ArrayList<Integer> subtaskIds = new ArrayList<>();
-    protected ArrayList<Subtask> subtasks = new ArrayList<>();
 
-    public void setSubtaskIds(ArrayList<Integer> subtaskIds) {
-        this.subtaskIds = subtaskIds;
-    }
-
-    public ArrayList<Subtask> getSubtasks() {
-        return subtasks;
-    }
-
-    public void setSubtasks(ArrayList<Subtask> subtasks) {
-        this.subtasks = subtasks;
+    public Epic(Integer id, String name, String description, Status status) {
+        super(id, name, description, status);
     }
 
     public Epic(String name, String description, Status status) {
@@ -25,6 +16,10 @@ public class Epic extends Task {
 
     public ArrayList<Integer> getSubtaskIds() {
         return subtaskIds;
+    }
+
+    public void setSubtaskIds(ArrayList<Integer> subtaskIds) {
+        this.subtaskIds = subtaskIds;
     }
 
     public void setSubtaskIds(Integer id) { // ложим id subtaska в лист subtaskIds
