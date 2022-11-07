@@ -22,12 +22,8 @@ public class Epic extends Task {
         this.subtaskIds = subtaskIds;
     }
 
-    public void setSubtaskIds(Integer id) { // ложим id subtaska в лист subtaskIds
+    public void addSubtaskIds(Integer id) { // ложим id subtaska в лист subtaskIds
         subtaskIds.add(id);
-    }
-
-    public void setIdSubtaskIds(ArrayList<Integer> idsubtasks) { // ложим id subtaska в лист subtaskIds
-        this.subtaskIds = idsubtasks;
     }
 
     public void cleanSubtaskIds() {

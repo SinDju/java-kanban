@@ -24,7 +24,7 @@ public class ManagerTask {
 
         subtask.setId(id);
         int epicId = subtask.getEpicId();
-        epics.get(epicId).setSubtaskIds(id);
+        epics.get(epicId).addSubtaskIds(id);
         subtasks.put(id, subtask);
         return id;
     }
@@ -42,40 +42,54 @@ public class ManagerTask {
         return taskArrayList;
     }
 
-    public ArrayList<Subtask> getSubtask() { // кладем значение из мапы субтасков в лист и возвращаем его
+    public ArrayList<Subtask> getSubtasks() { // кладем значение из мапы субтасков в лист и возвращаем его
         ArrayList<Subtask> subtaskArrayList = new ArrayList<>(subtasks.values());
         return subtaskArrayList;
     }
 
-    public ArrayList<Epic> getEpic() { // кладем значение из мапы эпиков в лист и возвращаем его
+    public ArrayList<Epic> getEpics() { // кладем значение из мапы эпиков в лист и возвращаем его
         ArrayList<Epic> epicArrayList = new ArrayList<>(epics.values());
         return epicArrayList;
     }
 
     public void updateTask(Task task) { // Обновление объекта task
-        tasks.put(task.getId(), task);
+        if(tasks.containsKey(task.getId())) {
+            tasks.put(task.getId(), task);
+        } else {
+
+        }
     }
 
     public void updateSubtask(Subtask subtask) { // Обновление объекта subtask
-        subtasks.put(subtask.getId(), subtask);
-        Integer epicId = subtask.getEpicId();
-        updateStatusOfEpic(epics.get(epicId));
+        if(subtasks.containsKey(subtask.getId())) {
+            subtasks.put(subtask.getId(), subtask);
+            Integer epicId = subtask.getEpicId();
+            updateEpicStatus(epics.get(epicId));
+        } else {
+
+        }
     }
 
     public void updateEpic(Epic epic) { // Обновление объекта epic
-        int idEpic = epic.getId();
-        ArrayList<Integer> subtaskIds = epics.get(idEpic).getSubtaskIds();
+     /*   ArrayList<Integer> subtaskIds = epics.get(epic.getId()).getSubtaskIds();
 
-        epic.setSubtaskIds(subtaskIds);
-        epics.put(epic.getId(), epic);
-        updateStatusOfEpic(epic);
+        epic.setSubtaskIds(subtaskIds);*/
+//       А почему так делать не стоит?
+//        Я здесь передаю список subtaskIds из старого объекта эпик в новый, иначе если я убираю этот кусок,
+//        то у меня потом статус эпика правильно не обновляется
+        if (epics.containsKey(epic.getId())) {
+            epics.put(epic.getId(), epic);
+            updateEpicStatus(epic);
+        } else {
+
+        }
     }
 
     public Task getTask(int id) { // Получение по идентификатору объекта Task
         return tasks.get(id);
     }
 
-    public Subtask getSubtasks(int id) { // Получение по идентификатору объекта Subtasks
+    public Subtask getSubtask(int id) { // Получение по идентификатору объекта Subtask
         return subtasks.get(id);
     }
 
@@ -89,21 +103,13 @@ public class ManagerTask {
 
     public void deleteSubtasks() { // Удаление всех задач списка Subtasks
         subtasks.clear();
-        for (Integer id : epics.keySet()) {
-            for (int i = 0; i < epics.size(); i++) {
-                epics.get(id).cleanSubtaskIds();
-                updateStatusOfEpic(epics.get(id));
-            }
+        for (Epic epic : epics.values()) {
+            epic.cleanSubtaskIds();
+            updateEpicStatus(epic);
         }
     }
 
     public void deleteEpics() { // Удаление всех задач списка Epics
-        for (Integer id : epics.keySet()) {
-            for (int i = 0; i < epics.size(); i++) {
-                epics.get(id).cleanSubtaskIds();
-                // надо учесть, что здесь также нужно удалить эти задачи из эпиков и обновить статус эпиков
-            }
-        }
         subtasks.clear();
         epics.clear();
     }
@@ -116,7 +122,7 @@ public class ManagerTask {
         int idEpic = subtasks.get(id).getEpicId();
         epics.get(idEpic).removeSubtaskIds(id);
         subtasks.remove(id);
-        updateStatusOfEpic(epics.get(idEpic));
+        updateEpicStatus(epics.get(idEpic));
     }
 
     public void deleteEpic(int id) { // Удаление по идентификатору объекта Epic
@@ -137,12 +143,7 @@ public class ManagerTask {
         return subtaskArrayList;
     }
 
-    public Subtask getSubtask(Integer id) { // Извлекаем статусы Subtasks из объекта epic
-        Subtask subtask = subtasks.get(id);
-        return subtask;
-    }
-
-    public void updateStatusOfEpic(Epic epic) { // Обновление статуса объекта Epic
+    public void updateEpicStatus(Epic epic) { // Обновление статуса объекта Epic
 
         boolean isStatusNew = true;
         boolean isStatusDone = true;
