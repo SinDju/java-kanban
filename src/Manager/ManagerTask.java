@@ -55,8 +55,6 @@ public class ManagerTask {
     public void updateTask(Task task) { // Обновление объекта task
         if(tasks.containsKey(task.getId())) {
             tasks.put(task.getId(), task);
-        } else {
-
         }
     }
 
@@ -65,23 +63,12 @@ public class ManagerTask {
             subtasks.put(subtask.getId(), subtask);
             Integer epicId = subtask.getEpicId();
             updateEpicStatus(epics.get(epicId));
-        } else {
-
         }
     }
 
     public void updateEpic(Epic epic) { // Обновление объекта epic
-     /*   ArrayList<Integer> subtaskIds = epics.get(epic.getId()).getSubtaskIds();
-
-        epic.setSubtaskIds(subtaskIds);*/
-//       А почему так делать не стоит?
-//        Я здесь передаю список subtaskIds из старого объекта эпик в новый, иначе если я убираю этот кусок,
-//        то у меня потом статус эпика правильно не обновляется
         if (epics.containsKey(epic.getId())) {
             epics.put(epic.getId(), epic);
-            updateEpicStatus(epic);
-        } else {
-
         }
     }
 
