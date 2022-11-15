@@ -90,8 +90,6 @@ public class InMemoryTaskManager implements TaskManager {
 
     @Override
     public Task getTask(int id) { // Получение по идентификатору объекта Task
-        // вызвать InMemoryTaskManager обращается к менеджеру истории через интерфейс HistoryManager
-        // и использует реализацию, которую возвращает метод getDefaultHistory()
         historyManager.add(tasks.get(id));
         return tasks.get(id);
     }
