@@ -1,6 +1,6 @@
-package Manager;
+package manager;
 
-import Model.*;
+import model.*;
 
 import java.util.ArrayList;
 import java.util.HashMap;

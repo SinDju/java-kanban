@@ -1,8 +1,6 @@
-import Manager.HistoryManager;
-import Manager.InMemoryTaskManager;
-import Manager.Managers;
-import Manager.TaskManager;
-import Model.*;
+import manager.Managers;
+import manager.TaskManager;
+import model.*;
 
 public class Main {
 
@@ -69,6 +67,7 @@ public class Main {
         System.out.println(taskManager.getTask(1));
         System.out.println(taskManager.getTask(1));
         System.out.println(taskManager.getTask(1));
+        System.out.println(taskManager.getEpic(2));
         System.out.println("-------------------//-------------------------");
         System.out.println(taskManager.getHistory());
 

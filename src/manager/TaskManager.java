@@ -1,12 +1,11 @@
-package Manager;
+package manager;
 
-import Model.*;
+import model.*;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public interface TaskManager {
-
     public List<Task> getHistory();
 
     public int addNewTask(Task task);

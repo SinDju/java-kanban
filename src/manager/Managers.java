@@ -1,6 +1,4 @@
-package Manager;
-
-import Model.Task;
+package manager;
 
 public class Managers {
 
