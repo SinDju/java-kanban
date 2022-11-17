@@ -46,6 +46,4 @@ public interface TaskManager {
 
     public ArrayList<Subtask> getEpicSubtasks(int epicId);
 
-    public void updateEpicStatus(Epic epic);
-
 }

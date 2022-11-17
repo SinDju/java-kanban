@@ -11,7 +11,7 @@ public class InMemoryTaskManager implements TaskManager {
     private final HashMap<Integer, Subtask> subtasks = new HashMap<>();
     private final HashMap<Integer, Epic> epics = new HashMap<>();
     private int generatoreId = 0;
-    HistoryManager historyManager = Managers.getDefaultHistory();
+    private final HistoryManager historyManager = Managers.getDefaultHistory();
 
     @Override
     public List<Task> getHistory() {
@@ -163,8 +163,7 @@ public class InMemoryTaskManager implements TaskManager {
         return subtaskArrayList;
     }
 
-    @Override
-    public void updateEpicStatus(Epic epic) { // Обновление статуса объекта Epic
+    private void updateEpicStatus(Epic epic) { // Обновление статуса объекта Epic
 
         boolean isStatusNew = true;
         boolean isStatusDone = true;
