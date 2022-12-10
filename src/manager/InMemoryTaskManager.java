@@ -132,6 +132,7 @@ public class InMemoryTaskManager implements TaskManager {
 
     @Override
     public void deleteTask(int id) { // Удаление по идентификатору объекта Task
+        historyManager.remove(id);
         tasks.remove(id);
     }
 
@@ -141,6 +142,7 @@ public class InMemoryTaskManager implements TaskManager {
         epics.get(idEpic).removeSubtaskIds(id);
         subtasks.remove(id);
         updateEpicStatus(epics.get(idEpic));
+        historyManager.remove(id);
     }
 
     @Override
@@ -151,6 +153,7 @@ public class InMemoryTaskManager implements TaskManager {
         }
         epic.cleanSubtaskIds();
         epics.remove(id);
+        historyManager.remove(id);
     }
 
     @Override

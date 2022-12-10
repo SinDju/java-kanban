@@ -57,18 +57,20 @@ public class Main {
         System.out.println(taskManager.getEpicSubtasks(epicId1));
 
         System.out.println("-------------------//-------------------------");
-        System.out.println(taskManager.getTask(1));
-        System.out.println(taskManager.getTask(1));
-        System.out.println(taskManager.getTask(1));
-        System.out.println(taskManager.getTask(1));
-        System.out.println(taskManager.getTask(1));
-        System.out.println(taskManager.getTask(1));
-        System.out.println(taskManager.getTask(1));
-        System.out.println(taskManager.getTask(1));
-        System.out.println(taskManager.getTask(1));
+//        System.out.println(taskManager.getTask(1));
+//        System.out.println(taskManager.getTask(1));
+//        System.out.println(taskManager.getTask(1));
+//        System.out.println(taskManager.getTask(1));
+//        System.out.println(taskManager.getTask(1));
+//        System.out.println(taskManager.getTask(1));
+//        System.out.println(taskManager.getTask(1));
+//        System.out.println(taskManager.getTask(1));
+//        System.out.println(taskManager.getTask(1));
         System.out.println(taskManager.getTask(1));
         System.out.println(taskManager.getEpic(2));
+        System.out.println(taskManager.getTask(1));
         System.out.println("-------------------//-------------------------");
+//        taskManager.deleteTask(1);
         System.out.println(taskManager.getHistory());
 
     }

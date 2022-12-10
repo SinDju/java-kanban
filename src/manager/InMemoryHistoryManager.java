@@ -5,106 +5,107 @@ import model.Task;
 import java.util.*;
 
 public class InMemoryHistoryManager implements HistoryManager {
-
-    private final List<Task> tasksHistory = new ArrayList<>();
-
-    CustomLinkedList customLinkedList = new CustomLinkedList();
+    private final Map<Integer, Node> nodeMap = new HashMap<>();
+   /* CustomLinkedList customLinkedList = new CustomLinkedList(); - Привет, Патимат.
+    Правильно ли я поняла, что класс для списка customLinkedList, т.е. и объект customLinkedList
+    создавать не нужно? Или все таки нужен внутренний класс CustomLinkedList? Методы linkLast, getTasks и removeNode
+    у меня получилось реализовать в классе InMemoryHistoryManager. Но само описание ТЗ немного сбивает с толку*/
 
 
     @Override
     public void add(Task task) {
         Integer taskId = task.getId();
 
-        if (customLinkedList.customHashMap.containsKey(taskId)) {
-            Node node = customLinkedList.customHashMap.get(taskId);
-            customLinkedList.customHashMap.remove(taskId);
-            customLinkedList.removeNode(node);// проверяем есть ли в мапе айди этого ключа и удаляем его если что
+        if (nodeMap.containsKey(taskId)) { // проверяем есть ли в мапе айди этого ключа и удаляем его если что
+            Node node = nodeMap.get(taskId);
+            nodeMap.remove(taskId);
+            removeNode(node);
         }
-        customLinkedList.linkLast(task);
+        linkLast(task);
     }
 
     @Override
     public void remove(int id) {
-        if (tasksHistory.contains(id)) {
-            tasksHistory.remove(id);
-            Node node = customLinkedList.customHashMap.get(id);
-            customLinkedList.customHashMap.remove(id);
-            customLinkedList.removeNode(node);
+        if (nodeMap.containsKey(id)) {
+            Node node = nodeMap.get(id);
+            nodeMap.remove(id);
+            removeNode(node);
         }
     }
-
     @Override
     public List<Task> getHistory() {
 // Реализация метода getHistory должна перекладывать задачи из связного списка в ArrayList для формирования ответа.
-        tasksHistory.addAll(customLinkedList.getHistory());
-
-        return tasksHistory;
-    }
-}
-
-class CustomLinkedList {
-    /**
-     * Указатель на первый элемент списка. Он же first
-     */
-    private Node head;
-
-    /**
-     * Указатель на последний элемент списка. Он же last
-     */
-    private Node tail;
-    private int size = 0;
-
-    Map<Integer, Node> customHashMap = new HashMap<>();
-
-    public void linkLast(Task task) {
-        final Node oldTail = tail;
-        final Node newNode = new Node(task, null, oldTail);
-        tail = newNode;
-        if (oldTail == null)
-            head = newNode;
-        else
-            oldTail.next = newNode;
-        size++;
-
-        customHashMap.put(task.getId(), newNode);
+        return getTasks();
     }
 
-    public void removeNode(Node node) {
-        final Task task = node.item;
-        final Node prev = node.prev;
-        final Node next = node.next;
+    public static class Node {
+        public Task item;
+        public Node next;
+        public Node prev;
 
-        if (prev == null) {
-            head = next;
-        } else {
-            prev.next = next;
-            node.prev = null;
+        public Node(Task item, Node next, Node prev) {
+            this.item = item;
+            this.next = next;
+            this.prev = prev;
         }
-
-        if (next == null) {
-            tail = prev;
-        } else {
-            next.prev = prev;
-            node.next = null;
-        }
-
-        node.item = null;
-        size--;
-
     }
 
-    public ArrayList<Task> getHistory() {
-//getTasks собирает все задачи из  списка CustomLinkedList в обычный ArrayList.
-        ArrayList<Task> taskArrayList = new ArrayList<>();
-        Node task = head;
-        for (int i = 0; i < size; i++) {
-            taskArrayList.add(task.item);
-            task = task.next;
 
-            if (task == null) {
-                return taskArrayList;
+        private Node head;
+        private Node tail;
+        private int size = 0;
+        public void linkLast(Task task) {
+            if(nodeMap.containsKey(task.getId())){
+                removeNode(nodeMap.get(task.getId()));
+                nodeMap.remove(task.getId());
             }
+            final Node oldTail = tail;
+            final Node newNode = new Node(task, null, oldTail);
+            tail = newNode;
+            if (oldTail == null)
+                head = newNode;
+            else
+                oldTail.next = newNode;
+            size++;
+
+            nodeMap.put(task.getId(), newNode);
         }
-        return taskArrayList;
+
+        public void removeNode(Node node) {
+
+                final Node prev = node.prev;
+                final Node next = node.next;
+
+                if (prev == null) {
+                    head = next;
+                } else {
+                    prev.next = next;
+                    node.prev = null;
+                }
+
+                if (next == null) {
+                    tail = prev;
+                } else {
+                    next.prev = prev;
+                    node.next = null;
+                }
+
+                node.item = null;
+                size--;
+        }
+
+        public ArrayList<Task> getTasks() {
+//getTasks собирает все задачи из  списка CustomLinkedList в обычный ArrayList.
+            ArrayList<Task> taskArrayList = new ArrayList<>();
+            Node task = head;
+            for (int i = 0; i < size; i++) {
+                taskArrayList.add(task.item);
+                task = task.next;
+
+                if (task == null) {
+                    return taskArrayList;
+                }
+            }
+            return taskArrayList;
+        }
     }
-}
