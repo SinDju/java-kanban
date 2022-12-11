@@ -5,6 +5,7 @@ import model.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class InMemoryTaskManager implements TaskManager {
     private final HashMap<Integer, Task> tasks = new HashMap<>();
@@ -112,11 +113,17 @@ public class InMemoryTaskManager implements TaskManager {
 
     @Override
     public void deleteTasks() { // Удаление всех задач списка Task
+        for(Integer taskId : tasks.keySet()){
+            historyManager.remove(taskId);
+        }
         tasks.clear();
     }
 
     @Override
     public void deleteSubtasks() { // Удаление всех задач списка Subtasks
+        for (Integer subtaskId : subtasks.keySet()) {
+            historyManager.remove(subtaskId);
+        }
         subtasks.clear();
         for (Epic epic : epics.values()) {
             epic.cleanSubtaskIds();
@@ -126,6 +133,10 @@ public class InMemoryTaskManager implements TaskManager {
 
     @Override
     public void deleteEpics() { // Удаление всех задач списка Epics
+        deleteSubtasks();
+        for (Integer epicId : epics.keySet()) {
+            historyManager.remove(epicId);
+        }
         subtasks.clear();
         epics.clear();
     }
@@ -150,6 +161,7 @@ public class InMemoryTaskManager implements TaskManager {
         Epic epic = epics.get(id);
         for (Integer idSubtask : epic.getSubtaskIds()) {
             subtasks.remove(idSubtask);
+            historyManager.remove(idSubtask);
         }
         epic.cleanSubtaskIds();
         epics.remove(id);
