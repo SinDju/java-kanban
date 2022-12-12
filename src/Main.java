@@ -61,7 +61,7 @@ public class Main {
         System.out.println(taskManager.getTask(1));
 //        taskManager.deleteTasks();
 //        taskManager.deleteSubtasks();
-//        taskManager.deleteEpic(2);
+        taskManager.deleteEpics();
         System.out.println("-------------------//-------------------------");
 //        taskManager.deleteTask(1);
         System.out.println(taskManager.getHistory());

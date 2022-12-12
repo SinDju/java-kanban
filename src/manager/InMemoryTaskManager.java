@@ -125,6 +125,7 @@ public class InMemoryTaskManager implements TaskManager {
             historyManager.remove(subtaskId);
         }
         subtasks.clear();
+
         for (Epic epic : epics.values()) {
             epic.cleanSubtaskIds();
             updateEpicStatus(epic);
@@ -133,12 +134,15 @@ public class InMemoryTaskManager implements TaskManager {
 
     @Override
     public void deleteEpics() { // Удаление всех задач списка Epics
-        deleteSubtasks();
         for (Integer epicId : epics.keySet()) {
             historyManager.remove(epicId);
         }
-        subtasks.clear();
         epics.clear();
+
+        for (Integer subtaskId : subtasks.keySet()) {
+            historyManager.remove(subtaskId);
+        }
+        subtasks.clear();
     }
 
     @Override
