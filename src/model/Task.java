@@ -1,12 +1,31 @@
 package model;
 
+import manager.TasksEnum;
+
 import java.util.Objects;
 
 public class Task {
+
+    protected TasksEnum tasksEnum;
     protected String name;
     protected String description;
     protected Integer id;
     protected Status status;
+
+    public Task(String name, TasksEnum tasksEnum, String description, Status status) {
+        this.name = name;
+        this.tasksEnum = tasksEnum;
+        this.description = description;
+        this.status = status;
+    }
+
+    public Task(Integer id, TasksEnum tasksEnum, String name, String description, Status status) {
+        this.id = id;
+        this.tasksEnum = tasksEnum;
+        this.name = name;
+        this.description = description;
+        this.status = status;
+    }
 
     public Task(Integer id, String name, String description, Status status) {
         this.id = id;
@@ -19,6 +38,10 @@ public class Task {
         this.name = name;
         this.description = description;
         this.status = status;
+    }
+
+    public TasksEnum getTasksEnum() {
+        return tasksEnum;
     }
 
     public Integer getId() {

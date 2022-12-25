@@ -51,7 +51,7 @@ public class Main {
         updateEpic1.setName("обновленный epic1");
         taskManager.updateEpic(updateEpic1);
 
-        taskManager.deleteSubtask(subtaskId3);
+//        taskManager.deleteSubtask(subtaskId3);
         System.out.println(taskManager.getEpicSubtasks(epicId1));
 
         System.out.println("-------------------//-------------------------");
@@ -61,7 +61,7 @@ public class Main {
         System.out.println(taskManager.getTask(1));
 //        taskManager.deleteTasks();
 //        taskManager.deleteSubtasks();
-        taskManager.deleteEpics();
+//        taskManager.deleteEpics();
         System.out.println("-------------------//-------------------------");
 //        taskManager.deleteTask(1);
         System.out.println(taskManager.getHistory());
