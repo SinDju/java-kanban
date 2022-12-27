@@ -1,13 +1,17 @@
+import manager.FileBackedTasksManager;
 import manager.Managers;
 import manager.TaskManager;
 import model.*;
+
+import java.io.File;
+import java.nio.file.Path;
 
 public class Main {
 
     public static void main(String[] args) {
         System.out.println("Поехали!");
 
-        TaskManager taskManager = Managers.getDefault();
+        TaskManager taskManager = Managers.getDefaultFileBacked(Path.of("src/resource/historyTasksManager.csv"));
         Task task1 = new Task("таск1", "задача таска1", Status.NEW);
         final Integer taskId1 = taskManager.addNewTask(task1);
         System.out.println(taskManager.getTasks());
@@ -51,20 +55,19 @@ public class Main {
         updateEpic1.setName("обновленный epic1");
         taskManager.updateEpic(updateEpic1);
 
-//        taskManager.deleteSubtask(subtaskId3);
         System.out.println(taskManager.getEpicSubtasks(epicId1));
-
         System.out.println("-------------------//-------------------------");
 
         System.out.println(taskManager.getTask(1));
         System.out.println(taskManager.getEpic(2));
         System.out.println(taskManager.getTask(1));
-//        taskManager.deleteTasks();
-//        taskManager.deleteSubtasks();
-//        taskManager.deleteEpics();
         System.out.println("-------------------//-------------------------");
-//        taskManager.deleteTask(1);
-        System.out.println(taskManager.getHistory());
 
+
+
+        System.out.println(taskManager.getHistory());
+        TaskManager taskManager1 = FileBackedTasksManager.loadFromFile(
+                new File("src/resource/historyTasksManager.csv"));
+        System.out.println(taskManager1.getHistory());
     }
 }

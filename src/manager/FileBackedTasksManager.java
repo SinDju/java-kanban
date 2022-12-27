@@ -10,16 +10,9 @@ import java.io.*;
 import java.nio.file.Path;
 import java.util.*;
 
-import static manager.TasksEnum.*;
+import static manager.TasksType.*;
 
 public class FileBackedTasksManager extends InMemoryTaskManager {
-
-    public static void main(String[] args) {
-        Path path1 = Path.of("src/resource/historyTasksManager.csv");
-        TaskManager taskManager1 = loadFromFile(path1.toFile());
-        System.out.println(taskManager1.getHistory());
-    }
-
     private static Path path;
 
     public FileBackedTasksManager(Path path) {
@@ -152,7 +145,7 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
         return subtaskArrayList;
     }
 
-    public void save() {
+    private void save() {
         try (FileWriter writer = new FileWriter(path.toFile(), false)) {
 
             writer.write("id,type,name,status,description,epic\n");
@@ -175,21 +168,12 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
     }
 
     private String toString(Task task) { // сохранение задачи в строку
-        String lineTask = "";
-
-        if (task.getTasksEnum().equals(SUBTASK)) {
-            Subtask subtask = (Subtask) task;
-            return lineTask + subtask.getId() + "," + subtask.getTasksEnum() + "," + subtask.getName() + ","
-                    + subtask.getStatus() + "," + subtask.getDescription() + "," + subtask.getEpicId() + "\n";
+        if (task.getEpicId() != 0) {
+            return task.getId() + "," + task.getType() + "," + task.getName() + "," + task.getStatus() + ","
+                    + task.getDescription() + "," + task.getEpicId() + "\n";
         }
-        if (task.getTasksEnum().equals(EPIC)) {
-            Epic epic = (Epic) task;
-            return lineTask + epic.getId() + "," + epic.getTasksEnum() + "," + epic.getName() + ","
-                    + epic.getStatus() + "," + epic.getDescription() + "\n";
-        }
-
-        return lineTask + task.getId() + "," + task.getTasksEnum() + "," + task.getName() + ","
-                + task.getStatus() + "," + task.getDescription() + "\n";
+        return task.getId() + "," + task.getType() + "," + task.getName() + "," + task.getStatus() + ","
+                + task.getDescription() + "\n";
     }
 
     public static String historyToString(HistoryManager manager) {
@@ -220,19 +204,19 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
 
         int id = Integer.valueOf(linesTask[0]);
         String name = linesTask[2];
-        TasksEnum tasksEnum = TasksEnum.valueOf(linesTask[1]);
+        TasksType tasksType = TasksType.valueOf(linesTask[1]);
         Status status = Status.valueOf(linesTask[3]);
         String description = linesTask[4];
 
 
-        switch (tasksEnum) {
+        switch (tasksType) {
             case TASK:
-                return new Task(id, tasksEnum, name, description, status);
+                return new Task(id, tasksType, name, description, status);
             case EPIC:
-                return new Epic(id, tasksEnum, name, description, status);
+                return new Epic(id, tasksType, name, description, status);
             case SUBTASK:
                 String epicIdString = linesTask[5].trim();
-                return new Subtask(id, tasksEnum, name, description, status, Integer.valueOf(epicIdString));
+                return new Subtask(id, tasksType, name, description, status, Integer.valueOf(epicIdString));
             default:
                 return null;
         }
@@ -248,11 +232,11 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
         if (lines.length != 0) {
             for (int i = 1; i < lines.length - 2; i++) {
                 Task task = fromString(lines[i]);
-                TasksEnum tasksEnum = task.getTasksEnum();
+                TasksType tasksType = task.getType();
                 Subtask subtask;
                 Epic epic;
 
-                switch (tasksEnum) {
+                switch (tasksType) {
                     case SUBTASK:
                         subtask = (Subtask) task;
                         Integer epicId = subtask.getEpicId();

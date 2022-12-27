@@ -1,27 +1,27 @@
 package model;
 
-import manager.TasksEnum;
+import manager.TasksType;
 
 import java.util.Objects;
 
 public class Task {
 
-    protected TasksEnum tasksEnum;
+//    protected TasksType tasksType;
     protected String name;
     protected String description;
     protected Integer id;
     protected Status status;
 
-    public Task(String name, TasksEnum tasksEnum, String description, Status status) {
+    public Task(String name, TasksType tasksType, String description, Status status) {
         this.name = name;
-        this.tasksEnum = tasksEnum;
+//        this.tasksType = tasksType;
         this.description = description;
         this.status = status;
     }
 
-    public Task(Integer id, TasksEnum tasksEnum, String name, String description, Status status) {
+    public Task(Integer id, TasksType tasksType, String name, String description, Status status) {
         this.id = id;
-        this.tasksEnum = tasksEnum;
+//        this.tasksType = tasksType;
         this.name = name;
         this.description = description;
         this.status = status;
@@ -40,9 +40,17 @@ public class Task {
         this.status = status;
     }
 
-    public TasksEnum getTasksEnum() {
-        return tasksEnum;
+    public TasksType getType() {
+        return TasksType.TASK;
     }
+
+//    public TasksType getTasksEnum() {
+//        return tasksType;
+//    }
+
+public Integer getEpicId() {
+    return 0;
+}
 
     public Integer getId() {
         return id;

@@ -1,6 +1,6 @@
 package model;
 
-import manager.TasksEnum;
+import manager.TasksType;
 
 import java.util.ArrayList;
 import java.util.Objects;
@@ -8,8 +8,8 @@ import java.util.Objects;
 public class Epic extends Task {
     protected ArrayList<Integer> subtaskIds = new ArrayList<>();
 
-    public Epic(String name, TasksEnum tasksEnum, String description, Status status) {
-        super(name, tasksEnum, description, status);
+    public Epic(String name, TasksType tasksType, String description, Status status) {
+        super(name, tasksType, description, status);
     }
     public Epic(Integer id, String name, String description, Status status) {
         super(id, name, description, status);
@@ -19,9 +19,14 @@ public class Epic extends Task {
         super(name, description, status);
     }
 
-    public Epic(int id, TasksEnum tasksEnum, String name, String description, Status status) {
-        super(id, tasksEnum, name, description, status);
+    public Epic(int id, TasksType tasksType, String name, String description, Status status) {
+        super(id, tasksType, name, description, status);
 
+    }
+
+    @Override
+    public TasksType getType() {
+        return TasksType.EPIC;
     }
 
     public ArrayList<Integer> getSubtaskIds() {
