@@ -211,12 +211,12 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
 
         switch (tasksType) {
             case TASK:
-                return new Task(id, tasksType, name, description, status);
+                return new Task(id, name, description, status);
             case EPIC:
-                return new Epic(id, tasksType, name, description, status);
+                return new Epic(id, name, description, status);
             case SUBTASK:
                 String epicIdString = linesTask[5].trim();
-                return new Subtask(id, tasksType, name, description, status, Integer.valueOf(epicIdString));
+                return new Subtask(id, name, description, status, Integer.valueOf(epicIdString));
             default:
                 return null;
         }

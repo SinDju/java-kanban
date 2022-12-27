@@ -7,11 +7,6 @@ import java.util.Objects;
 public class Subtask extends Task {
     protected int epicId;
 
-    public Subtask(String name, TasksType tasksType, String description, Status status, int epicId) {
-       super(name, tasksType, description, status);
-        this.epicId = epicId;
-    }
-
     public Subtask(Integer id, String name, String description, Status status, int epicId) {
         super(id, name, description, status);
         this.epicId = epicId;
@@ -22,10 +17,6 @@ public class Subtask extends Task {
         this.epicId = epicId;
     }
 
-    public Subtask(int id, TasksType tasksType, String name, String description, Status status, int epicId) {
-        super(id, tasksType, name, description, status);
-        this.epicId = epicId;
-    }
     @Override
     public TasksType getType() {
         return TasksType.SUBTASK;

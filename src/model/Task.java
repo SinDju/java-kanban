@@ -6,26 +6,11 @@ import java.util.Objects;
 
 public class Task {
 
-//    protected TasksType tasksType;
     protected String name;
     protected String description;
     protected Integer id;
     protected Status status;
 
-    public Task(String name, TasksType tasksType, String description, Status status) {
-        this.name = name;
-//        this.tasksType = tasksType;
-        this.description = description;
-        this.status = status;
-    }
-
-    public Task(Integer id, TasksType tasksType, String name, String description, Status status) {
-        this.id = id;
-//        this.tasksType = tasksType;
-        this.name = name;
-        this.description = description;
-        this.status = status;
-    }
 
     public Task(Integer id, String name, String description, Status status) {
         this.id = id;
