@@ -168,12 +168,10 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
     }
 
     private String toString(Task task) { // сохранение задачи в строку
-        if (task.getEpicId() != 0) {
             return task.getId() + "," + task.getType() + "," + task.getName() + "," + task.getStatus() + ","
-                    + task.getDescription() + "," + task.getEpicId() + "\n";
-        }
-        return task.getId() + "," + task.getType() + "," + task.getName() + "," + task.getStatus() + ","
-                + task.getDescription() + "\n";
+                    + task.getDescription() + "," + task.getEpicId() + "\n"; // Доброго вечера, Патимат!
+        // Я тут делала проверку, потому что если я не делаю ее, то у меня возвращается null в файле.
+        // По ТЗ там не должен сохраняться null. Это ничего?
     }
 
     public static String historyToString(HistoryManager manager) {

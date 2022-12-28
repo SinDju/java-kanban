@@ -29,12 +29,8 @@ public class Task {
         return TasksType.TASK;
     }
 
-//    public TasksType getTasksEnum() {
-//        return tasksType;
-//    }
-
 public Integer getEpicId() {
-    return 0;
+    return null;
 }
 
     public Integer getId() {

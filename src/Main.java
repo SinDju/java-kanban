@@ -11,7 +11,7 @@ public class Main {
     public static void main(String[] args) {
         System.out.println("Поехали!");
 
-        TaskManager taskManager = Managers.getDefaultFileBacked(Path.of("src/resource/historyTasksManager.csv"));
+        TaskManager taskManager = Managers.getDefault(Path.of("src/resource/historyTasksManager.csv"));
         Task task1 = new Task("таск1", "задача таска1", Status.NEW);
         final Integer taskId1 = taskManager.addNewTask(task1);
         System.out.println(taskManager.getTasks());

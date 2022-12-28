@@ -1,6 +1,6 @@
 id,type,name,status,description,epic
-1,TASK,обнавленный таск1,IN_PROGRESS,задача таска1
-2,EPIC,обновленный epic1,IN_PROGRESS,задача эпика1
+1,TASK,обнавленный таск1,IN_PROGRESS,задача таска1,null
+2,EPIC,обновленный epic1,IN_PROGRESS,задача эпика1,null
 3,SUBTASK,обновленный субстаск1 эпика1,DONE,задача субтаска1,2
 4,SUBTASK,обновленный субстаск2 эпика1,DONE,задача субтаска2,2
 5,SUBTASK,субстаск3 эпика1,NEW,задача субтаска3,2
