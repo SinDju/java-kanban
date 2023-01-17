@@ -1,4 +1,4 @@
-package manager;
+package fileManager;
 
 public enum TasksType {
     TASK("TASK"), SUBTASK("SUBTASK"), EPIC("EPIC");

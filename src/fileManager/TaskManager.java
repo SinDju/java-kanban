@@ -1,9 +1,10 @@
-package manager;
+package fileManager;
 
 import model.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.TreeSet;
 
 public interface TaskManager {
     public List<Task> getHistory();
@@ -45,5 +46,7 @@ public interface TaskManager {
     public void deleteEpic(int id);
 
     public ArrayList<Subtask> getEpicSubtasks(int epicId);
+
+    public TreeSet<Task> getPrioritizedTasks();
 
 }

@@ -1,4 +1,4 @@
-package manager;
+package fileManager;
 
 import java.nio.file.Path;
 

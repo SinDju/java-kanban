@@ -1,19 +1,41 @@
 package model;
 
-import manager.TasksType;
+import fileManager.TasksType;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Objects;
 
 public class Epic extends Task {
     protected ArrayList<Integer> subtaskIds = new ArrayList<>();
 
+    protected LocalDateTime endTime;
+
     public Epic(Integer id, String name, String description, Status status) {
         super(id, name, description, status);
     }
 
+    public Epic(Integer id, String name, String description, Status status, Integer duration, String startTime,
+                String endTime) {
+        super(id, name, description, status, duration, startTime);
+        this.endTime = LocalDateTime.parse(endTime, formatter);
+    }
+
     public Epic(String name, String description, Status status) {
         super(name, description, status);
+    }
+
+    public void setEndTime(LocalDateTime endTime) {
+        this.endTime = endTime;
+    }
+
+    @Override
+    public LocalDateTime getEndTime() {
+        return endTime;
+    }
+
+    public String getStringEndTime() {
+        return endTime.format(formatter);
     }
 
     @Override
@@ -42,37 +64,34 @@ public class Epic extends Task {
     }
 
     @Override
+    public String toString() {
+        String result = "Epic{" +
+                    "name='" + name + '\'' +
+                    ", description='" + description + '\'' +
+                ", status=" + status ;
+        if (!subtaskIds.isEmpty()) {
+            result = result + ", subtaskIds=" + subtaskIds;
+        }
+        if (startTime != null) {
+            result = result +
+                    ", duration=" + duration.toMinutes() +
+                    ", startTime=" + startTime.format(formatter);
+        }
+
+        return result + '}';
+    }
+
+    @Override
     public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
-        if (!super.equals(o)) {
-            return false;
-        }
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        if (!super.equals(o)) return false;
         Epic epic = (Epic) o;
-        return Objects.equals(subtaskIds, epic.subtaskIds);
+        return Objects.equals(subtaskIds, epic.subtaskIds) && Objects.equals(endTime, epic.endTime);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(super.hashCode(), subtaskIds);
-    }
-
-    @Override
-    public String toString() {
-        String result = "Epic{";
-        if (subtaskIds == null) {
-            result = result + "subtaskIds=" + subtaskIds + ", ";
-        } else {
-            result = result +
-                    "name='" + name + '\'' +
-                    ", description='" + description + '\'' +
-                    ", status=" + status +
-                    '}';
-        }
-        return result;
+        return Objects.hash(super.hashCode(), subtaskIds, endTime);
     }
 }
