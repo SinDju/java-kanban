@@ -1,7 +1,4 @@
-package test;
-
-import fileManager.InMemoryTaskManager;
-import test.TaskManagerTest;
+package fileManager;
 
 class InMemoryTaskManagerTest extends TaskManagerTest<InMemoryTaskManager> {
 

@@ -1,6 +1,5 @@
-package test;
+package fileManager;
 
-import fileManager.TaskManager;
 import model.Epic;
 import model.Subtask;
 import model.Task;
@@ -12,7 +11,6 @@ import java.util.List;
 
 import static model.Status.*;
 import static org.junit.jupiter.api.Assertions.*;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 public abstract class TaskManagerTest<T extends TaskManager> {
     T taskManager;

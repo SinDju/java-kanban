@@ -1,9 +1,5 @@
-package test;
+package fileManager;
 
-import fileManager.HistoryManager;
-import fileManager.InMemoryTaskManager;
-import fileManager.Managers;
-import fileManager.TaskManager;
 import model.Epic;
 import model.Subtask;
 import model.Task;
@@ -13,7 +9,8 @@ import org.junit.jupiter.api.Test;
 import java.util.List;
 
 import static model.Status.NEW;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 class HistoryManagerTest {
     HistoryManager historyManager;
