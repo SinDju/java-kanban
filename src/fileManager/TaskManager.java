@@ -7,46 +7,46 @@ import java.util.List;
 import java.util.TreeSet;
 
 public interface TaskManager {
-    public List<Task> getHistory();
+    List<Task> getHistory();
 
-    public int addNewTask(Task task);
+    int addNewTask(Task task);
 
-    public int addNewSubtask(Subtask subtask);
+    int addNewSubtask(Subtask subtask);
 
-    public int addNewEpic(Epic epic);
+    int addNewEpic(Epic epic);
 
-    public ArrayList<Task> getTasks();
+    ArrayList<Task> getTasks();
 
-    public ArrayList<Subtask> getSubtasks();
+    ArrayList<Subtask> getSubtasks();
 
-    public ArrayList<Epic> getEpics();
+    ArrayList<Epic> getEpics();
 
-    public void updateTask(Task task);
+    void updateTask(Task task);
 
-    public void updateSubtask(Subtask subtask);
+    void updateSubtask(Subtask subtask);
 
-    public void updateEpic(Epic epic);
+    void updateEpic(Epic epic);
 
-    public Task getTask(int id);
+    Task getTask(int id);
 
-    public Subtask getSubtask(int id);
+    Subtask getSubtask(int id);
 
-    public Epic getEpic(int id);
+    Epic getEpic(int id);
 
-    public void deleteTasks();
+    void deleteTasks();
 
-    public void deleteSubtasks();
+    void deleteSubtasks();
 
-    public void deleteEpics();
+    void deleteEpics();
 
-    public void deleteTask(int id);
+    void deleteTask(int id);
 
-    public void deleteSubtask(int id);
+    void deleteSubtask(int id);
 
-    public void deleteEpic(int id);
+    void deleteEpic(int id);
 
-    public ArrayList<Subtask> getEpicSubtasks(int epicId);
+    ArrayList<Subtask> getEpicSubtasks(int epicId);
 
-    public TreeSet<Task> getPrioritizedTasks();
+    TreeSet<Task> getPrioritizedTasks();
 
 }

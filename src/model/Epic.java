@@ -15,10 +15,14 @@ public class Epic extends Task {
         super(id, name, description, status);
     }
 
-    public Epic(Integer id, String name, String description, Status status, Integer duration, String startTime,
-                String endTime) {
+    public Epic(Integer id, String name, String description, Status status, Integer duration, LocalDateTime startTime,
+                LocalDateTime endTime) {
         super(id, name, description, status, duration, startTime);
-        this.endTime = LocalDateTime.parse(endTime, formatter);
+        this.endTime = endTime;
+    }
+
+    public Epic(String name, String description, Status status, Integer duration, LocalDateTime startTime) {
+        super(name, description, status, duration, startTime);
     }
 
     public Epic(String name, String description, Status status) {

@@ -1,5 +1,3 @@
-package test;
-
 import exception.ManagerSaveException;
 import fileManager.FileBackedTasksManager;
 import model.Epic;
@@ -34,9 +32,7 @@ class FileBackedTasksManagerTest extends TaskManagerTest<FileBackedTasksManager>
 
     @Test
     public void correctlyLoadfromfileEndSave() {
-        Task task = createTask();
         taskManager.addNewTask(task);
-        Epic epic = createEpic();
         taskManager.addNewEpic(epic);
         taskManager.getHistory();
         FileBackedTasksManager fileManager = FileBackedTasksManager.loadFromFile(file);
@@ -67,5 +63,4 @@ class FileBackedTasksManagerTest extends TaskManagerTest<FileBackedTasksManager>
 
         assertEquals("Не удалось считать данные из файла.", exception.getMessage());
     }
-
 }

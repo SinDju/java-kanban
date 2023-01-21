@@ -2,6 +2,7 @@ package model;
 
 import fileManager.TasksType;
 
+import java.time.LocalDateTime;
 import java.util.Objects;
 
 public class Subtask extends Task {
@@ -12,10 +13,17 @@ public class Subtask extends Task {
         this.epicId = epicId;
     }
     public Subtask(Integer id, String name, String description, Status status, int epicId, Integer duration,
-                   String startTime) {
+                   LocalDateTime startTime) {
         super(id, name, description, status, duration, startTime);
         this.epicId = epicId;
     }
+
+    public Subtask(String name, String description, Status status, int epicId, Integer duration,
+                   LocalDateTime startTime) {
+        super(name, description, status, duration, startTime);
+        this.epicId = epicId;
+    }
+
     public Subtask(String name, String description, Status status, int epicId) {
         super(name, description, status);
         this.epicId = epicId;
@@ -25,7 +33,8 @@ public class Subtask extends Task {
         super(name, description, status);
     }
 
-    public Subtask(String name, String description, Status status, Integer duration, String startTime, int epicId) {
+    public Subtask(String name, String description, Status status, Integer duration, LocalDateTime startTime,
+                   int epicId) {
         super(name, description, status, duration, startTime);
         this.epicId = epicId;
     }

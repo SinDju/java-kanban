@@ -14,6 +14,7 @@ public class InMemoryTaskManager implements TaskManager {
 
     @Override
     public TreeSet<Task> getPrioritizedTasks() {
+        treeSet.clear();
         treeSet.addAll(tasks.values());
         treeSet.addAll(subtasks.values());
 
@@ -32,12 +33,27 @@ public class InMemoryTaskManager implements TaskManager {
         task.setId(id);
         if (task.getStartTime() != null) {
             if (getPrioritizedTasks().contains(task)) {
-                System.out.println("Задача с данным временем уже задана");
-                return id;
+                System.out.println("Задача не создана, так как данное время занято");
+                final int nullId = --generatoreId;
+                return nullId;
             }
         }
         tasks.put(id, task);
         return id;
+    }
+
+    private void updateTimeEpic(Epic epic) {
+        if (epic.getStartTime() != null) {
+            for (Integer idSubtask : epic.getSubtaskIds()) {
+                if (epic.getStartTime().isAfter(subtasks.get(idSubtask).getStartTime())) {
+                    epic.setDuration(subtasks.get(idSubtask).getDuration());
+                    epic.setStartTime(subtasks.get(idSubtask).getStartTime());
+                }
+                if (epic.getEndTime().isBefore(subtasks.get(idSubtask).getEndTime())) {
+                    epic.setEndTime(subtasks.get(idSubtask).getEndTime());
+                }
+            }
+        }
     }
 
     @Override
@@ -47,8 +63,9 @@ public class InMemoryTaskManager implements TaskManager {
 
         if (subtask.getStartTime() != null) {
             if (getPrioritizedTasks().contains(subtask)) {
-                System.out.println("Задача с данным временем уже задана");
-                return id;
+                System.out.println("Задача не создана, так как данное время занято");
+                final int nullId = --generatoreId;
+                return nullId;
             }
         }
 
@@ -57,21 +74,14 @@ public class InMemoryTaskManager implements TaskManager {
         Epic epic = epics.get(epicId);
         epic.addSubtaskIds(id);
         subtasks.put(id, subtask);
+
         if (subtask.getStartTime() != null) {
             if (epic.getSubtaskIds().size() == 1) {
                 epic.setDuration(subtask.getDuration());
                 epic.setStartTime(subtask.getStartTime());
                 epic.setEndTime(subtask.getEndTime());
             } else {
-                for (Integer idSubtask : epic.getSubtaskIds()) {
-                    if (epic.getStartTime().isAfter(subtasks.get(idSubtask).getStartTime())) {
-                        epic.setDuration(subtasks.get(idSubtask).getDuration());
-                        epic.setStartTime(subtasks.get(idSubtask).getStartTime());
-                    }
-                    if (epic.getEndTime().isBefore(subtasks.get(idSubtask).getEndTime())) {
-                        epic.setEndTime(subtasks.get(idSubtask).getEndTime());
-                    }
-                }
+                updateTimeEpic(epic);
             }
         }
         return id;
@@ -129,6 +139,8 @@ public class InMemoryTaskManager implements TaskManager {
 
     @Override
     public void updateSubtask(Subtask subtask) { // Обновление объекта subtask
+        Subtask oldSubtask = subtasks.get(subtask.getId());
+
         if (subtasks.containsKey(subtask.getId())) {
             if (subtask.getStartTime() == null) {
                 subtasks.put(subtask.getId(), subtask);
@@ -139,12 +151,15 @@ public class InMemoryTaskManager implements TaskManager {
                 subtasks.put(subtask.getId(), subtask);
                 Integer epicId = subtask.getEpicId();
                 updateEpicStatus(epics.get(epicId));
-            } else if (!getBooleanPrioritizedTasks(subtask)) {
+                updateTimeEpic(epics.get(epicId));
+            }
+            else if (!getBooleanPrioritizedTasks(subtask)) {
                 System.out.println("Tакое время начала задачи уже занято");
             } else {
                 subtasks.put(subtask.getId(), subtask);
                 Integer epicId = subtask.getEpicId();
                 updateEpicStatus(epics.get(epicId));
+                updateTimeEpic(epics.get(epicId));
             }
         }
     }
@@ -158,18 +173,27 @@ public class InMemoryTaskManager implements TaskManager {
 
     @Override
     public Task getTask(int id) { // Получение по идентификатору объекта Task
+        if (!tasks.containsKey(id)) {
+            return null;
+        }
         historyManager.add(tasks.get(id));
         return tasks.get(id);
     }
 
     @Override
     public Subtask getSubtask(int id) { // Получение по идентификатору объекта Subtask
+        if (!subtasks.containsKey(id)) {
+            return null;
+        }
         historyManager.add(subtasks.get(id));
         return subtasks.get(id);
     }
 
     @Override
     public Epic getEpic(int id) { // Получение по идентификатору объекта Epic
+        if (!epics.containsKey(id)) {
+            return null;
+        }
         historyManager.add(epics.get(id));
         return epics.get(id);
     }
@@ -221,9 +245,12 @@ public class InMemoryTaskManager implements TaskManager {
     @Override
     public void deleteSubtask(int id) { // Удаление по идентификатору объекта Subtask
         int idEpic = subtasks.get(id).getEpicId();
-        epics.get(idEpic).removeSubtaskIds(id);
+        Epic epic = epics.get(idEpic);
+        updateTimeEpic(epic);
+        epic.removeSubtaskIds(id);
         subtasks.remove(id);
-        updateEpicStatus(epics.get(idEpic));
+        updateEpicStatus(epic);
+        updateTimeEpic(epic);
         historyManager.remove(id);
     }
 

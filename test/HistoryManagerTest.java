@@ -1,5 +1,3 @@
-package test;
-
 import fileManager.HistoryManager;
 import fileManager.InMemoryTaskManager;
 import fileManager.Managers;

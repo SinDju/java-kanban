@@ -15,11 +15,6 @@ public class Task implements Comparable<Task>{
     protected Status status;
     protected LocalDateTime startTime;
     protected Duration duration;
-
-    public DateTimeFormatter getFormatter() {
-        return formatter;
-    }
-
     protected DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy,HH:mm");
 
     public Task(Integer id, String name, String description, Status status) {
@@ -29,21 +24,22 @@ public class Task implements Comparable<Task>{
         this.status = status;
     }
 
-    public Task(Integer id, String name, String description, Status status, Integer duration, String startTime) {
+    public Task(Integer id, String name, String description, Status status, Integer duration, LocalDateTime startTime) {
         this.id = id;
         this.name = name;
         this.description = description;
         this.status = status;
         this.duration = Duration.ofMinutes(duration);
-        this.startTime = LocalDateTime.parse(startTime, formatter);
+        this.startTime = startTime; // Я думула, что пользователь будет передавать текстовую строку,поэтому сделала
+        // String
     }
 
-    public Task(String name, String description, Status status, Integer duration, String startTime) {
+    public Task(String name, String description, Status status, Integer duration, LocalDateTime startTime) {
         this.name = name;
         this.description = description;
         this.status = status;
         this.duration = Duration.ofMinutes(duration);
-        this.startTime = LocalDateTime.parse(startTime, formatter);
+        this.startTime = startTime;
 
     }
 

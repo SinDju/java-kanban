@@ -8,8 +8,11 @@ import model.Task;
 
 import java.io.*;
 import java.nio.file.Path;
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
+
+import static fileManager.TasksType.EPIC;
 
 public class FileBackedTasksManager extends InMemoryTaskManager {
     private static Path path;
@@ -174,7 +177,7 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
         }
         return task.getId() + "," + task.getType() + "," + task.getName() + "," + task.getStatus() + ","
                 + task.getDescription() + "," + task.getEpicId() + "," + task.getDuration().toMinutes() + ","
-                + task.getStringEndTime() + ","
+                + task.getStringStartTime() + ","
                 + task.getStringEndTime() + "\n";
     }
 
@@ -206,33 +209,40 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
 
     private static Task fromString(String value) { //  создание задачи из строки
         String[] linesTask = value.split(",", 11);
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy,HH:mm");
 
         int id = Integer.valueOf(linesTask[0]);
         String name = linesTask[2];
         TasksType tasksType = TasksType.valueOf(linesTask[1]);
         Status status = Status.valueOf(linesTask[3]);
         String description = linesTask[4];
+        Integer duration = linesTask.length > 6 ? Integer.valueOf(linesTask[6]) : null;
+        LocalDateTime startTime = linesTask.length > 6 ? LocalDateTime.parse(linesTask[7] + ","
+                + linesTask[8], formatter) : null;
+        LocalDateTime endTime = linesTask.length > 10? LocalDateTime.parse(linesTask[9]
+                + "," + linesTask[10], formatter) : null;
+
 
         switch (tasksType) {
             case TASK:
-                if (linesTask.length == 6) {
+                if (duration == null) {
                     return new Task(id, name, description, status);
                 }
-                return new Task(id, name, description, status, Integer.valueOf(linesTask[6]),
-                        linesTask[7] + "," + linesTask[8]);
+                return new Task(id, name, description, status, duration,
+                        startTime);
             case EPIC:
-                if (linesTask.length == 6) {
+                if (duration == null) {
                     return new Epic(id, name, description, status);
                 }
-                return new Epic(id, name, description, status, Integer.valueOf(linesTask[6]),
-                        linesTask[7] + "," + linesTask[8], linesTask[9] + "," + linesTask[10]);
+                return new Epic(id, name, description, status, duration,
+                        startTime, endTime);
             case SUBTASK:
                 String epicIdString = linesTask[5].trim();
-                if (linesTask.length == 6) {
+                if (duration == null) {
                     return new Subtask(id, name, description, status, Integer.valueOf(epicIdString));
                 }
                 return new Subtask(id, name, description, status, Integer.valueOf(epicIdString),
-                        Integer.valueOf(linesTask[6]), linesTask[7] + "," + linesTask[8]);
+                        duration, startTime);
             default:
                 return null;
         }
