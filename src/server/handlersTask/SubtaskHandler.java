@@ -12,6 +12,7 @@ import model.Task;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.net.HttpURLConnection;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.util.Optional;
@@ -40,29 +41,29 @@ public class SubtaskHandler implements HttpHandler {
                 deleteSubTask(exchange);
                 break;
             default:
-                writeResponse(exchange, "Такого операции не существует", 404);
+                writeResponse(exchange, "Такого операции не существует", HttpURLConnection.HTTP_NOT_FOUND);
         }
     }
 
     private void getSubTask(HttpExchange exchange) throws IOException {
         if (exchange.getRequestURI().getQuery() == null) {
             response = gson.toJson(taskManager.getSubtasks());
-            writeResponse(exchange, response, 200);
+            writeResponse(exchange, response, HttpURLConnection.HTTP_OK);
             return;
         }
         if (getTaskId(exchange).isEmpty()) {
-            writeResponse(exchange, "Некорректный идентификатор!", 400);
+            writeResponse(exchange, "Некорректный идентификатор!", HttpURLConnection.HTTP_BAD_REQUEST);
             return;
         }
         int id = getTaskId(exchange).get();
         for (Subtask subtask : taskManager.getSubtasks()) {
             if (subtask.getId().equals(id)) {
                 response = gson.toJson(taskManager.getSubtask(id));
-                writeResponse(exchange, response, 200);
+                writeResponse(exchange, response, HttpURLConnection.HTTP_OK);
                 return;
             }
         }
-        writeResponse(exchange, "Задач с таким id не найдено!", 404);
+        writeResponse(exchange, "Задач с таким id не найдено!", HttpURLConnection.HTTP_NOT_FOUND);
     }
 
 
@@ -72,28 +73,29 @@ public class SubtaskHandler implements HttpHandler {
             String jsonTask = new String(json.readAllBytes(), DEFAULT_CHARSET);
             Subtask subTask = gson.fromJson(jsonTask, Subtask.class);
             if (subTask == null) {
-                writeResponse(exchange, "Задача не должна быть пустой!", 400);
+                writeResponse(exchange, "Задача не должна быть пустой!",
+                        HttpURLConnection.HTTP_BAD_REQUEST);
                 return;
             }
             for (Subtask subtask : taskManager.getSubtasks()) {
                 if (subTask.getId() != null && subtask.getId().equals(subTask.getId())) {
                     taskManager.updateSubtask(subTask);
-                    writeResponse(exchange, "Сабтаск обновлен!", 200);
+                    writeResponse(exchange, "Сабтаск обновлен!", HttpURLConnection.HTTP_OK);
                     return;
                 }
             }
             taskManager.addNewSubtask(subTask);
-            writeResponse(exchange, "Задача успешно добавлена!", 201);
+            writeResponse(exchange, "Задача успешно добавлена!", HttpURLConnection.HTTP_CREATED);
 
         } catch (JsonSyntaxException e) {
-            writeResponse(exchange, "Получен некорректный JSON", 400);
+            writeResponse(exchange, "Получен некорректный JSON", HttpURLConnection.HTTP_BAD_REQUEST);
         }
     }
 
     private void deleteSubTask(HttpExchange exchange) throws IOException {
         if (exchange.getRequestURI().getQuery() == null) {
             taskManager.deleteSubtasks();
-            writeResponse(exchange, "Задачи успешно удалены!", 200);
+            writeResponse(exchange, "Задачи успешно удалены!", HttpURLConnection.HTTP_OK);
             return;
         }
         if (getTaskId(exchange).isEmpty()) {
@@ -103,11 +105,11 @@ public class SubtaskHandler implements HttpHandler {
         for (Subtask subtask : taskManager.getSubtasks()) {
             if (subtask.getId().equals(id)) {
                 taskManager.deleteSubtask(id);
-                writeResponse(exchange, "Задача успешно удалена!", 200);
+                writeResponse(exchange, "Задача успешно удалена!", HttpURLConnection.HTTP_OK);
                 return;
             }
         }
-        writeResponse(exchange, "Задачи с таким id не найдено!", 404);
+        writeResponse(exchange, "Задачи с таким id не найдено!", HttpURLConnection.HTTP_NOT_FOUND);
     }
 
     private Optional<Integer> getTaskId(HttpExchange exchange) {

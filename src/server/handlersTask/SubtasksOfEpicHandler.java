@@ -8,6 +8,7 @@ import model.Epic;
 
 import java.io.IOException;
 import java.io.OutputStream;
+import java.net.HttpURLConnection;
 import java.nio.charset.StandardCharsets;
 import java.util.Optional;
 
@@ -28,7 +29,7 @@ public class SubtasksOfEpicHandler implements HttpHandler {
                 getEpicSubtasks(exchange);
                 break;
             default:
-                writeResponse(exchange, "Такой операции не существует", 404);
+                writeResponse(exchange, "Такой операции не существует", HttpURLConnection.HTTP_NOT_FOUND);
 
         }
 
@@ -36,18 +37,18 @@ public class SubtasksOfEpicHandler implements HttpHandler {
 
     private void getEpicSubtasks(HttpExchange exchange) throws IOException {
         if (getTaskId(exchange).isEmpty()) {
-            writeResponse(exchange, "Некорректный идентификатор!", 400);
+            writeResponse(exchange, "Некорректный идентификатор!", HttpURLConnection.HTTP_BAD_REQUEST);
             return;
         }
         int id = getTaskId(exchange).get();
         for (Epic epics : taskManager.getEpics()) {
             if (epics.getId().equals(id)) {
                 response = gson.toJson(taskManager.getEpicSubtasks(id));
-                writeResponse(exchange, response, 200);
+                writeResponse(exchange, response, HttpURLConnection.HTTP_OK);
                 return;
             }
         }
-        writeResponse(exchange, "Задач с таким id не найдено!", 404);
+        writeResponse(exchange, "Задач с таким id не найдено!", HttpURLConnection.HTTP_NOT_FOUND);
 
     }
 

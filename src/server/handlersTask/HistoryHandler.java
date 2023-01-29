@@ -7,6 +7,7 @@ import fileManager.TaskManager;
 
 import java.io.IOException;
 import java.io.OutputStream;
+import java.net.HttpURLConnection;
 import java.nio.charset.StandardCharsets;
 
 public class HistoryHandler implements HttpHandler {
@@ -26,17 +27,17 @@ public class HistoryHandler implements HttpHandler {
                 getHistoryList(exchange);
                 break;
             default:
-                writeResponse(exchange, "Такого операции не существует", 404);
+                writeResponse(exchange, "Такого операции не существует", HttpURLConnection.HTTP_NOT_FOUND);
 
         }
     }
 
     private void getHistoryList(HttpExchange exchange) throws IOException {
         if (taskManager.getHistory().isEmpty()) {
-            writeResponse(exchange, "История пуста!", 200);
+            writeResponse(exchange, "История пуста!", HttpURLConnection.HTTP_OK);
         } else {
             response = gson.toJson(taskManager.getHistory());
-            writeResponse(exchange, response, 200);
+            writeResponse(exchange, response, HttpURLConnection.HTTP_OK);
         }
     }
 

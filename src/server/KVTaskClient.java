@@ -1,6 +1,8 @@
 package server;
 
 
+import exception.ManagerSaveException;
+
 import java.io.IOException;
 import java.net.URI;
 import java.net.http.HttpClient;
@@ -45,7 +47,7 @@ public class KVTaskClient {
                 System.out.println("Не удалось сохранить данные");
             }
         } catch (IOException | InterruptedException e) {
-            e.printStackTrace();
+            throw new ManagerSaveException("Ошибка сохраненнения данных");
         }
     }
 
@@ -65,8 +67,7 @@ public class KVTaskClient {
             );
             return response.body();
         } catch (IOException | InterruptedException e) {
-            e.printStackTrace();
-            return "Во время запроса произошла ошибка";
+            throw new ManagerSaveException("Во время запроса произошла ошибка");
         }
     }
 }

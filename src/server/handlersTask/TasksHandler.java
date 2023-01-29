@@ -9,6 +9,7 @@ import fileManager.TaskManager;
 
 import java.io.IOException;
 import java.io.OutputStream;
+import java.net.HttpURLConnection;
 import java.nio.charset.StandardCharsets;
 
 public class TasksHandler implements HttpHandler {
@@ -29,17 +30,17 @@ public class TasksHandler implements HttpHandler {
                 getAllTasks(exchange);
                 break;
             default:
-                writeResponse(exchange, "Такого операции не существует", 404);
+                writeResponse(exchange, "Такого операции не существует", HttpURLConnection.HTTP_NOT_FOUND);
 
         }
     }
 
     private void getAllTasks(HttpExchange exchange) throws IOException {
         if (taskManager.getPrioritizedTasks().isEmpty()) {
-            writeResponse(exchange, "Список задач пуст", 200);
+            writeResponse(exchange, "Список задач пуст", HttpURLConnection.HTTP_OK);
         } else {
             response = gson.toJson(taskManager.getPrioritizedTasks());
-            writeResponse(exchange, response, 200);
+            writeResponse(exchange, response, HttpURLConnection.HTTP_OK);
         }
     }
 
