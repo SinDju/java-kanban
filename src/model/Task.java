@@ -15,7 +15,7 @@ public class Task implements Comparable<Task>{
     protected Status status;
     protected LocalDateTime startTime;
     protected Duration duration;
-    protected DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy,HH:mm");
+    //protected DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy,HH:mm");
 
     public Task(Integer id, String name, String description, Status status) {
         this.id = id;
@@ -30,8 +30,7 @@ public class Task implements Comparable<Task>{
         this.description = description;
         this.status = status;
         this.duration = Duration.ofMinutes(duration);
-        this.startTime = startTime; // Я думула, что пользователь будет передавать текстовую строку,поэтому сделала
-        // String
+        this.startTime = startTime;
     }
 
     public Task(String name, String description, Status status, Integer duration, LocalDateTime startTime) {
@@ -72,17 +71,6 @@ public class Task implements Comparable<Task>{
 
     public LocalDateTime getStartTime() {
         return startTime;
-    }
-
-    public void setStringStartTime(String startTime) {
-        this.startTime = LocalDateTime.parse(startTime, formatter);
-    }
-    public String getStringStartTime() {
-        return startTime.format(formatter);
-    }
-
-    public String getStringEndTime() {
-        return startTime.plus(duration).format(formatter);
     }
 
     public LocalDateTime getEndTime() {
@@ -138,7 +126,7 @@ public class Task implements Comparable<Task>{
                 ", status=" + status;
         if (startTime != null) {
             result = result + ", duration=" + duration.toMinutes() +
-                    ", startTime=" + startTime.format(formatter);
+                    ", startTime=" + startTime;
         }
         return result + '}';
     }
@@ -155,6 +143,6 @@ public class Task implements Comparable<Task>{
 
     @Override
     public int hashCode() {
-        return Objects.hash(name, description, id, status, startTime, duration, formatter);
+        return Objects.hash(name, description, id, status, startTime, duration);
     }
 }

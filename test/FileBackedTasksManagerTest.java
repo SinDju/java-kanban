@@ -13,8 +13,8 @@ import java.nio.file.Path;
 import static org.junit.jupiter.api.Assertions.*;
 
 class FileBackedTasksManagerTest extends TaskManagerTest<FileBackedTasksManager> {
-    private Path path = Path.of(("src/resource/historyTasksManager.csv"));
-    private File file = new File(String.valueOf(path));
+    private String path = "src/resource/historyTasksManager.csv";
+    private File file = new File(path);
 
     @Override
     public FileBackedTasksManager createTaskManager() {
@@ -24,7 +24,7 @@ class FileBackedTasksManagerTest extends TaskManagerTest<FileBackedTasksManager>
     @AfterEach
     public void afterEach() {
         try {
-            Files.delete(path);
+            Files.delete(Path.of(path));
         } catch (IOException exception) {
             System.out.println(exception.getMessage());
         }

@@ -15,10 +15,14 @@ import java.util.*;
 import static fileManager.TasksType.EPIC;
 
 public class FileBackedTasksManager extends InMemoryTaskManager {
-    private static Path path;
+    //private static Path path;
+    private static String path;
 
-    public FileBackedTasksManager(Path path) {
+    public FileBackedTasksManager(String path) {
         this.path = path;// новый менеджер получает файл для автосохранения в своём конструкторе и сохраняет его в поле
+    }
+
+    public FileBackedTasksManager() {
 
     }
 
@@ -147,8 +151,8 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
         return subtaskArrayList;
     }
 
-    private void save() {
-        try (FileWriter writer = new FileWriter(path.toFile(), false)) {
+    protected void save() {
+        try (FileWriter writer = new FileWriter(path, false)) {
 
             writer.write("id,type,name,status,description,epic,duration,startTime,startTimeMinutes," +
                     "endTime,endTimeMinutes\n");
@@ -177,8 +181,8 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
         }
         return task.getId() + "," + task.getType() + "," + task.getName() + "," + task.getStatus() + ","
                 + task.getDescription() + "," + task.getEpicId() + "," + task.getDuration().toMinutes() + ","
-                + task.getStringStartTime() + ","
-                + task.getStringEndTime() + "\n";
+                + task.getStartTime() + ","
+                + task.getEndTime() + "\n";
     }
 
     public static String historyToString(HistoryManager manager) {
@@ -250,7 +254,7 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
 
     public static FileBackedTasksManager loadFromFile(File file) { // восстанавливает данные менеджера из файла
         // при запуске программы
-        FileBackedTasksManager taskManager1 = new FileBackedTasksManager(file.toPath());
+        FileBackedTasksManager taskManager1 = new FileBackedTasksManager(file.toString());
 
         int maxId = 0;
 

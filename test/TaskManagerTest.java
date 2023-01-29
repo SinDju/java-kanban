@@ -321,17 +321,15 @@ public abstract class TaskManagerTest<T extends TaskManager> {
     void getPrioritizedTasks() {
         final int epicId = taskManager.addNewEpic(epic);
         subtask.setEpicId(epicId);
-        subtask.setStringStartTime("11.01.2023,21:36");
+        subtask.setStartTime(LocalDateTime.of(2023,12,10,12,0));
         subtask.setDuration(Duration.ofMinutes(15));
-
-        final int subtaskId = taskManager.addNewSubtask(subtask);
 
         Task task = createTask();
         final int taskId = taskManager.addNewTask(task);
-        task.setStringStartTime("11.01.2023,22:36");
+        task.setStartTime(LocalDateTime.now());
         task.setDuration(Duration.ofMinutes(25));
 
-        assertEquals("11.01.2023,21:36", subtask.getStringStartTime());
+        assertEquals(LocalDateTime.of(2023,12,10,12,0), subtask.getStartTime());
         assertTrue(taskManager.getPrioritizedTasks().contains(taskManager.getTask(taskId)));
     }
 }

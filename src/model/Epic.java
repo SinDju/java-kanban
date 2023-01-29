@@ -38,9 +38,6 @@ public class Epic extends Task {
         return endTime;
     }
 
-    public String getStringEndTime() {
-        return endTime.format(formatter);
-    }
 
     @Override
     public TasksType getType() {
@@ -79,7 +76,7 @@ public class Epic extends Task {
         if (startTime != null) {
             result = result +
                     ", duration=" + duration.toMinutes() +
-                    ", startTime=" + startTime.format(formatter);
+                    ", startTime=" + startTime;
         }
 
         return result + '}';

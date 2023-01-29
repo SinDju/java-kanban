@@ -63,7 +63,7 @@ public class Subtask extends Task {
                 ", status=" + status;
         if (startTime != null) {
             result = result + ", duration=" + duration.toMinutes() +
-                    ", startTime=" + startTime.format(formatter);
+                    ", startTime=" + startTime;
         }
         return result + '}';
     }

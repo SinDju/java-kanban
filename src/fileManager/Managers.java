@@ -1,19 +1,25 @@
 package fileManager;
 
-import java.nio.file.Path;
+
+import server.HTTPTaskManager;
+import server.KVServer;
+
+import java.io.IOException;
 
 public class Managers {
-
-
+    static public TaskManager getDefault(String url) throws IOException, InterruptedException {
+        return new HTTPTaskManager(url);
+    }
+    static public TaskManager getInMemoryTaskManger() {
+        return new InMemoryTaskManager();
+    }
 
     public static HistoryManager getDefaultHistory() {
         //  возвращает объект InMemoryHistoryManager — историю просмотров.
         return new InMemoryHistoryManager();
     }
 
-    public static TaskManager getDefault(Path path) {
-//        возвращает объект FileBackedTasksManager
+    static public FileBackedTasksManager getFileBackedTasksManager(String path) {
         return new FileBackedTasksManager(path);
     }
-
 }
